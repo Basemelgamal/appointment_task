@@ -7,6 +7,7 @@
             <table class="table mt-2" id="appointmentsTable">
                 <thead>
                     <tr>
+                        <th scope="col">ID</th>
                         <th scope="col">User Name</th>
                         <th scope="col">Appointment Date</th>
                         <th scope="col">Reason</th>
@@ -15,26 +16,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($appointments as $appointment)
-                    <tr id="appointment{{ $appointment->id }}">
-                        <td>{{ $appointment->user->name }}</td>
-                        <td>{{ $appointment->appointment }}</td>
-                        <td>{{ $appointment->reason }}</td>
-                        <td>{{ $appointment->created_at }}</td>
-                        <td>
-                            <a href="{{ route('dashboard.appointments.edit',$appointment->id) }}">
-                                <span class="text-dark">
-                                    <i class="fa fa-edit"></i>
-                                </span>
-                            </a>
-                            <a href="javascript:void(0)" onclick="appointmentDelete({{ $appointment->id }})" >
-                                <span class="text-danger">
-                                    <i class="fa fa-trash"></i>
-                                </span>
-                            </a>
-                        </td>
-                    </tr>
-                    @endforeach
+
                 </tbody>
             </table>
         </div>
@@ -42,7 +24,37 @@
 </div>
 @endsection
 @push('scripts')
+
     <script>
+        $(document).ready( function () {
+
+            let appointmentsTable = $("#appointmentsTable").DataTable({
+                lengthChange: true,
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                searching: true,
+                dom: 'Blfrtip',
+                "buttons": [
+                    'colvis',
+                ],
+                'columnDefs': [{ 'orderable': false, 'targets': 0 }],
+                'aaSorting': [[1, 'asc']],
+                "ajax": {
+                    url: "{{route('dashboard.appointments.datatable')}}",
+                },
+                "columns": [
+                    {"data": "id"},
+                    {"data": "username"},
+                    {"data": "appointment"},
+                    {"data": "reason"},
+                    {"data": "created_at"},
+                    {"data": "action"},
+                ],
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            });
+        });
+
         function appointmentDelete(id){
                 var url = '{{ url("admin/appointments/") }}'+'/'+id;
                 Swal.fire({

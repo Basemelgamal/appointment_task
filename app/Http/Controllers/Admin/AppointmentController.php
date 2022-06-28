@@ -3,9 +3,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AppointmentRequest;
+use App\Http\Resources\AppointmentResources;
 use App\Models\Appointment;
 use App\Models\User;
 use Illuminate\Http\Request;
+use DataTables;
 
 class AppointmentController extends Controller
 {
@@ -16,11 +18,11 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $input = [
-            'appointments' => Appointment::all(),
-        ];
+        return view('dashboard.appointments.index');
+    }
 
-        return view('dashboard.appointments.index',$input);
+    public function getDatatable(){
+        return AppointmentResources::collection(Appointment::all());
     }
 
     /**
