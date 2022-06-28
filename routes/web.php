@@ -23,7 +23,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::group(['middleware'=>'auth','prefix'=>'admin','as'=>'dashboard.'], function(){
     Route::resource('/users', 'App\Http\Controllers\Admin\UserController');
-    Route::resource('/appointments', 'App\Http\Controllers\Admin\AppointmentController');
+    Route::resource('/appointments', 'App\Http\Controllers\Admin\AppointmentController')->except('show');
+    Route::get('/appointments/getDataTable', 'App\Http\Controllers\Admin\AppointmentController@getDatatable')->name('appointments.datatable');
 });
-Route::get('/appointments/getDataTable', 'App\Http\Controllers\Admin\AppointmentController@getDatatable')->name('dashboard.appointments.datatable');
 Route::get('/appointments', 'App\Http\Controllers\AppointmentController@index')->middleware('auth');
