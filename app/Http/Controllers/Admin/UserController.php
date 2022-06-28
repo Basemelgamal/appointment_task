@@ -44,7 +44,8 @@ class UserController extends Controller
         if($request->hasFile('image')){
             $image = upload_image($request->file('image'),'users');
         }
-        User::create(array_merge($request->validated(), ['image' => $image ]));
+        $password = Hash::make($request->password);
+        User::create(array_merge($request->validated(), ['image' => $image, 'password' => $password  ]));
         return redirect()->route('dashboard.users.index')->with(['err'=>'0','alert'=>[
             'icon'  =>'success',
             'title' =>'Success',
