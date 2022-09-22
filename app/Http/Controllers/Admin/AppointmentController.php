@@ -11,6 +11,9 @@ use DataTables;
 
 class AppointmentController extends Controller
 {
+    public function __contruct(AppointmentRequest $request){
+        $this->variable = $Variable
+    }
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +48,7 @@ class AppointmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AppointmentRequest $request)
+    public function store()
     {
         Appointment::create(array_merge($request->validated()));
         return redirect()->route('dashboard.appointments.index')->with(['err'=>'0','alert'=>[
